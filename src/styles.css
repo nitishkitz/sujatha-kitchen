@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-bg: #fffcf7;
+  --color-surface: #ffffff;
+  --color-tile: #f3ece0;
+  --color-ink: #161616;
+  --color-muted: #6a6560;
+  --color-forest: #1b4d3e;
+  --color-forest-deep: #12352c;
+  --color-terra: #c3541a;
+  --color-line: rgb(22 22 22 / 0.08);
+  --color-cream: #f4ead8;
+  --color-paper: #ffffff;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-te: "Noto Sans Telugu", "DM Sans", sans-serif;
+  --shadow-bar: 0 8px 24px rgb(18 53 44 / 0.22);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html,
+  body,
+  #app {
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.steam {
+  position: absolute;
+  width: 6px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.5);
+  filter: blur(2px);
+  animation: steam 2.4s ease-in infinite;
+}
+@keyframes steam {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  30% {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steam {
+    animation: none;
+  }
+}
