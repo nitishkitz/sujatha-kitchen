@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { SLOTS } from "@/lib/menu";
@@ -22,23 +22,40 @@ export function CheckoutScreen() {
   const place = useKitchen((s) => s.place);
   const navigate = useNavigate();
   const sub = bag.reduce((s, b) => s + b.unit * b.qty, 0);
+  const [busy, setBusy] = useState(false);
+  const [hydrated, setHydrated] = useState(() => useKitchen.persist.hasHydrated());
 
   useEffect(() => {
-    if (bag.length === 0) void navigate({ to: "/menu" });
-  }, [bag.length, navigate]);
+    return useKitchen.persist.onFinishHydration(() => setHydrated(true));
+  }, []);
 
-  function submit() {
-    if (!place()) {
-      toast.error("Name and a 10-digit mobile are needed");
-      return;
+  useEffect(() => {
+    if (!hydrated) return;
+    if (bag.length === 0) void navigate({ to: "/menu" });
+  }, [hydrated, bag.length, navigate]);
+
+  async function submit() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const ok = await place();
+      if (!ok) {
+        toast.error("Name and a 10-digit mobile are needed");
+        return;
+      }
+      toast.dismiss();
+      void navigate({ to: "/status" });
+    } catch {
+      toast.error("Could not place the order. Try again.");
+    } finally {
+      setBusy(false);
     }
-    void navigate({ to: "/status" });
   }
 
   return (
     <section className="flex min-h-dvh flex-col bg-bg">
-      <header className="px-5 pad-safe-t">
-        <div className="relative flex h-12 items-center justify-center">
+      <header className="px-4 pad-safe-t">
+        <div className="relative flex h-11 items-center justify-center">
           <Link
             to="/menu"
             aria-label="Back to menu"
@@ -46,20 +63,20 @@ export function CheckoutScreen() {
           >
             <ArrowLeft className="size-5" />
           </Link>
-          <h1 className="text-lg font-semibold tracking-tight">Your Bag</h1>
+          <h1 className="text-[1.05rem] font-semibold tracking-tight">Your Bag</h1>
         </div>
-        <ol className="mt-1 mb-4 flex items-center justify-center gap-5">
+        <ol className="mt-1 mb-5 flex items-center justify-center gap-5">
           {STEPS.map((label, i) => (
-            <li key={label} className="flex items-center gap-2">
+            <li key={label} className="flex items-center gap-1.5">
               <span
                 className={cn(
-                  "grid size-6 place-items-center rounded-full text-micro font-semibold",
+                  "grid size-5 place-items-center rounded-full text-[0.62rem] font-semibold",
                   i === 0 ? "bg-forest text-on-forest" : "bg-soft text-muted",
                 )}
               >
                 {i + 1}
               </span>
-              <span className={cn("text-caption", i === 0 ? "font-medium text-ink" : "text-muted")}>
+              <span className={cn("text-[0.72rem]", i === 0 ? "font-medium text-ink" : "text-muted")}>
                 {label}
               </span>
             </li>
@@ -67,15 +84,15 @@ export function CheckoutScreen() {
         </ol>
       </header>
 
-      <div className="flex-1 space-y-6 px-5 pb-28">
+      <div className="flex-1 space-y-5 px-5 pb-28">
         <section>
           <h2 className="text-sm font-semibold text-ink">Pickup time</h2>
-          <div className="mt-2.5 grid grid-cols-2 gap-2.5">
+          <div className="mt-2 grid grid-cols-2 gap-2.5">
             <button
               type="button"
               onClick={() => setPickup("asap")}
               className={cn(
-                "flex h-20 flex-col items-start justify-center gap-0.5 rounded-lg px-4 text-left",
+                "flex h-[4.6rem] flex-col items-start justify-center gap-0.5 rounded-[1rem] px-3.5 text-left",
                 pickup === "asap"
                   ? "bg-lime-soft shadow-[0_0_0_1.5px_var(--color-lime)]"
                   : "bg-surface shadow-card",
@@ -89,7 +106,7 @@ export function CheckoutScreen() {
               type="button"
               onClick={() => setPickup("schedule", SLOTS[0])}
               className={cn(
-                "flex h-20 flex-col items-start justify-center gap-0.5 rounded-lg px-4 text-left",
+                "flex h-[4.6rem] flex-col items-start justify-center gap-0.5 rounded-[1rem] px-3.5 text-left",
                 pickup === "schedule"
                   ? "bg-lime-soft shadow-[0_0_0_1.5px_var(--color-lime)]"
                   : "bg-surface shadow-card",
@@ -108,7 +125,7 @@ export function CheckoutScreen() {
                   type="button"
                   onClick={() => setPickup("schedule", t)}
                   className={cn(
-                    "rounded-md px-2 py-2 text-caption",
+                    "rounded-xl px-2 py-2 text-caption",
                     slot === t ? "bg-forest text-on-forest" : "bg-surface text-ink shadow-card",
                   )}
                 >
@@ -121,11 +138,11 @@ export function CheckoutScreen() {
 
         <section>
           <h2 className="text-sm font-semibold text-ink">Your details</h2>
-          <label className="mt-2.5 block text-caption text-muted">Name</label>
+          <label className="mt-2 block text-caption text-muted">Name</label>
           <input
             value={custName}
             onChange={(e) => setCustomer(e.target.value, phone)}
-            className="mt-1 h-field w-full rounded-md bg-surface px-3 text-sm shadow-card outline-none focus:ring-2 focus:ring-forest/30"
+            className="mt-1 h-field w-full rounded-xl bg-surface px-3 text-sm shadow-card outline-none focus:ring-2 focus:ring-forest/30"
             placeholder="Name called at the counter"
           />
           <label className="mt-3 block text-caption text-muted">Mobile number</label>
@@ -133,14 +150,14 @@ export function CheckoutScreen() {
             value={phone}
             onChange={(e) => setCustomer(custName, e.target.value)}
             inputMode="tel"
-            className="mt-1 h-field w-full rounded-md bg-surface px-3 text-sm shadow-card outline-none focus:ring-2 focus:ring-forest/30"
+            className="mt-1 h-field w-full rounded-xl bg-surface px-3 text-sm shadow-card outline-none focus:ring-2 focus:ring-forest/30"
             placeholder="10-digit number"
           />
         </section>
 
         <section>
           <h2 className="text-sm font-semibold text-ink">Payment at counter</h2>
-          <div className="mt-2 space-y-1">
+          <div className="mt-1.5">
             {(["upi", "cash"] as const).map((p) => (
               <button
                 key={p}
@@ -162,11 +179,11 @@ export function CheckoutScreen() {
           </div>
         </section>
 
-        <section className="pb-4">
+        <section>
           <h2 className="text-sm font-semibold text-ink">Order summary</h2>
           {bag.map((b) => (
-            <div key={b.key} className="flex items-center gap-3 border-b border-line py-3">
-              <FoodThumb src={b.img} size="sm" alt={b.name} />
+            <div key={b.key} className="flex items-center gap-3 border-b border-line py-2.5">
+              <FoodThumb src={b.img} variant="checkout" alt={b.name} />
               <p className="min-w-0 flex-1 truncate text-sm text-ink">
                 {b.name}
                 {b.sizeLabel ? ` (${b.sizeLabel})` : ""}
@@ -183,7 +200,9 @@ export function CheckoutScreen() {
       </div>
 
       <div className="sticky bottom-0 bg-bg px-5 pt-2 pad-safe-b">
-        <PrimaryButton onClick={submit}>Place order · {inr(sub)}</PrimaryButton>
+        <PrimaryButton onClick={() => void submit()} disabled={busy}>
+          {busy ? "Placing…" : `Place order · ${inr(sub)}`}
+        </PrimaryButton>
       </div>
     </section>
   );

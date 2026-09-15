@@ -58,23 +58,23 @@ export function ItemSheet() {
     <Drawer.Root open={!!sheetId} onOpenChange={(o) => !o && closeSheet()}>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-40 bg-ink/50" />
-        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[96dvh] max-w-phone flex-col overflow-hidden bg-bg outline-none">
-          <div className="relative h-52 shrink-0 overflow-hidden bg-forest-deep">
-            <img src={img} alt={item.name} className="size-full object-contain object-center p-3" />
+        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[96dvh] max-w-phone flex-col overflow-hidden bg-forest-deep outline-none">
+          <div className="relative h-sheet-hero shrink-0 overflow-hidden bg-forest-deep">
+            <img src={img} alt={item.name} className="absolute inset-0 size-full object-cover object-center" />
             <button
               type="button"
               aria-label="Close"
               onClick={closeSheet}
-              className="absolute top-4 right-4 grid size-11 place-items-center rounded-full bg-surface/90 text-ink"
+              className="absolute top-4 right-4 z-10 grid size-11 place-items-center rounded-full bg-surface/90 text-ink"
             >
               <X className="size-5" />
             </button>
           </div>
 
-          <div className="-mt-8 flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-sheet bg-surface">
+          <div className="-mt-8 flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-[1.75rem] bg-surface">
             <div className="mx-auto mt-2.5 h-1 w-10 shrink-0 rounded-full bg-line" />
             <div className="flex-1 overflow-y-auto px-5 pt-3 pb-4">
-              <Drawer.Title className="font-display text-3xl leading-tight font-medium tracking-tight text-ink">
+              <Drawer.Title className="font-display text-[1.85rem] leading-tight font-medium tracking-tight text-ink">
                 {item.name}
               </Drawer.Title>
               <Drawer.Description className="mt-1 text-sm text-muted">
@@ -91,7 +91,7 @@ export function ItemSheet() {
                         type="button"
                         onClick={() => setSize(s.id)}
                         className={cn(
-                          "flex h-20 flex-col items-start justify-center rounded-lg px-4 text-left transition-colors duration-150",
+                          "flex h-size flex-col items-center justify-center rounded-[1rem] text-center transition-colors duration-150",
                           on ? "bg-forest text-on-forest" : "bg-bg text-ink shadow-card",
                         )}
                       >
@@ -118,7 +118,7 @@ export function ItemSheet() {
                         <span className="flex items-center gap-3 text-sm text-ink">
                           <span
                             className={cn(
-                              "grid size-5 place-items-center rounded-sm border",
+                              "grid size-5 place-items-center rounded-[0.28rem] border",
                               on ? "border-forest bg-forest" : "border-muted/40",
                             )}
                           >
@@ -140,13 +140,13 @@ export function ItemSheet() {
                 value={note}
                 onChange={(e) => setNote(e.target.value.slice(0, 70))}
                 placeholder="Less spicy, no onion please..."
-                className="mt-2 min-h-16 w-full rounded-md border-0 bg-bg p-3 text-sm outline-none ring-1 ring-line focus:ring-2 focus:ring-forest/30"
+                className="mt-2 min-h-16 w-full rounded-xl bg-bg p-3 text-sm outline-none ring-1 ring-line focus:ring-2 focus:ring-forest/30"
               />
             </div>
 
             <div className="flex items-center gap-3 bg-surface px-5 pt-2 pad-safe-b">
               <QtyStepper value={qty} onChange={setQty} variant="round" />
-              <PrimaryButton tone="lime" onClick={add} className="flex-1">
+              <PrimaryButton tone="lime" onClick={add} className="flex-1 rounded-full">
                 Add to bag · {inr(unit * qty)}
               </PrimaryButton>
             </div>

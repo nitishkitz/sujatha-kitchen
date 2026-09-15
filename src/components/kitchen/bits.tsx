@@ -16,18 +16,18 @@ export function PhoneShell({
 
 export function FoodThumb({
   src,
-  size = "md",
+  variant = "menu",
   className,
   alt = "",
 }: {
   src: string;
-  size?: "sm" | "md" | "lg";
+  variant?: "menu" | "bag" | "checkout";
   className?: string;
   alt?: string;
 }) {
-  const box = size === "sm" ? "size-11" : size === "lg" ? "h-52 w-full" : "size-16";
+  const box = variant === "menu" ? "size-16" : "size-11";
   return (
-    <div className={cn("shrink-0 overflow-hidden rounded-md bg-soft", box, className)}>
+    <div className={cn("shrink-0 overflow-hidden rounded-[0.7rem] bg-soft", box, className)}>
       <img src={src} alt={alt} className="size-full object-cover" />
     </div>
   );
@@ -100,7 +100,7 @@ export function PrimaryButton({
     <button
       type="button"
       className={cn(
-        "press flex h-cta w-full items-center justify-center rounded-lg px-5 text-body font-semibold",
+        "press flex h-cta w-full items-center justify-center rounded-[1.15rem] px-5 text-body font-semibold",
         tone === "forest" ? "bg-forest text-on-forest" : "bg-lime text-on-lime",
         "disabled:opacity-50",
         className,
@@ -109,38 +109,5 @@ export function PrimaryButton({
     >
       {children}
     </button>
-  );
-}
-
-export function Wordmark({
-  light,
-  compact,
-  align = "center",
-}: {
-  light?: boolean;
-  compact?: boolean;
-  align?: "center" | "left";
-}) {
-  return (
-    <div className={align === "left" ? "text-left" : "text-center"}>
-      <p
-        className={cn(
-          "font-script leading-none",
-          compact ? "text-2xl" : "text-6xl",
-          light ? "text-on-forest" : "text-forest",
-        )}
-      >
-        Sujatha's
-      </p>
-      <p
-        className={cn(
-          "mt-1 font-display tracking-[0.22em] uppercase",
-          compact ? "text-micro" : "text-xs",
-          light ? "text-on-forest/75" : "text-muted",
-        )}
-      >
-        Authentic Kitchen
-      </p>
-    </div>
   );
 }

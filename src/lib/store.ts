@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ADDONS, type MenuItem } from "./menu";
-import { upsertLiveOrder } from "./staff";
+import { placePickupOrder, type StaffStatus } from "./kitchen-orders";
 
 export type Screen = "start" | "menu" | "checkout" | "status";
 export type Pay = "upi" | "cash";
@@ -51,7 +51,8 @@ type KitchenState = {
   setPay: (p: Pay) => void;
   setCustomer: (name: string, phone: string) => void;
   setStage: (stage: 0 | 1 | 2) => void;
-  place: () => boolean;
+  applyKitchenStatus: (status: StaffStatus) => void;
+  place: () => Promise<boolean>;
   reset: () => void;
   totals: () => { count: number; sub: number };
 };
@@ -66,6 +67,12 @@ export function unitPrice(item: MenuItem, sizeId: string | null, addonIds: strin
     : item.price;
   const extra = addonIds.reduce((s, id) => s + (ADDONS[id]?.price ?? 0), 0);
   return base + extra;
+}
+
+function stageFrom(status: StaffStatus): 0 | 1 | 2 {
+  if (status === "ready" || status === "completed") return 2;
+  if (status === "preparing") return 1;
+  return 0;
 }
 
 export const useKitchen = create<KitchenState>()(
@@ -110,34 +117,49 @@ export const useKitchen = create<KitchenState>()(
       setStage: (stage) => {
         const o = get().order;
         if (!o) return;
-        const next = { ...o, stage };
-        set({ order: next });
-        upsertLiveOrder(next);
+        set({ order: { ...o, stage } });
       },
-      place: () => {
+      applyKitchenStatus: (status) => {
+        const o = get().order;
+        if (!o) return;
+        set({ order: { ...o, stage: stageFrom(status) } });
+      },
+      place: async () => {
         const { bag, custName, phone, slot, pay } = get();
         const name = custName.trim();
         const ph = phone.replace(/\D/g, "");
         if (!name || ph.length < 10 || bag.length === 0) return false;
         const total = bag.reduce((s, b) => s + b.unit * b.qty, 0);
-        const code = "A" + String(10 + Math.floor(Math.random() * 80));
-        const order: PlacedOrder = {
-          code,
-          name,
-          phone: ph,
-          slot,
-          pay,
-          lines: bag,
-          total,
-          stage: 0,
-          placedAt: Date.now(),
-        };
+        const saved = await placePickupOrder({
+          data: {
+            name,
+            phone: ph,
+            slot,
+            pay,
+            total,
+            lines: bag.map((l) => ({
+              name: l.sizeLabel ? `${l.name} (${l.sizeLabel})` : l.name,
+              note: l.note || undefined,
+              qty: l.qty,
+              price: l.unit * l.qty,
+            })),
+          },
+        });
         set({
-          order,
+          order: {
+            code: saved.code,
+            name,
+            phone: ph,
+            slot,
+            pay,
+            lines: bag,
+            total,
+            stage: 0,
+            placedAt: Date.now(),
+          },
           bagOpen: false,
           sheetId: null,
         });
-        upsertLiveOrder(order);
         return true;
       },
       reset: () =>

@@ -12,10 +12,18 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as KitchenRouteImport } from './routes/kitchen'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as StatusRouteImport } from './routes/status'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AdminOrdersIdRouteImport } from './routes/admin/orders/$id'
+import { Route as KitchenIndexRouteImport } from './routes/kitchen/index'
+import { Route as KitchenLoginRouteImport } from './routes/kitchen/login'
+import { Route as KitchenMenuRouteImport } from './routes/kitchen/menu'
+import { Route as KitchenSettingsRouteImport } from './routes/kitchen/settings'
+import { Route as KitchenTodayRouteImport } from './routes/kitchen/today'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as KitchenOrdersIndexRouteImport } from './routes/kitchen/orders/index'
+import { Route as KitchenOrdersIdRouteImport } from './routes/kitchen/orders/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -32,6 +40,16 @@ const CheckoutRoute = CheckoutRouteImport.update({
   path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KitchenRoute = KitchenRouteImport.update({
+  id: '/kitchen',
+  path: '/kitchen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MenuRoute = MenuRouteImport.update({
   id: '/menu',
   path: '/menu',
@@ -42,43 +60,97 @@ const StatusRoute = StatusRouteImport.update({
   path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
+const KitchenIndexRoute = KitchenIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => KitchenRoute,
 } as any)
-const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
+const KitchenLoginRoute = KitchenLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => KitchenRoute,
+} as any)
+const KitchenMenuRoute = KitchenMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => KitchenRoute,
+} as any)
+const KitchenSettingsRoute = KitchenSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => KitchenRoute,
+} as any)
+const KitchenTodayRoute = KitchenTodayRouteImport.update({
+  id: '/today',
+  path: '/today',
+  getParentRoute: () => KitchenRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KitchenOrdersIndexRoute = KitchenOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => KitchenRoute,
+} as any)
+const KitchenOrdersIdRoute = KitchenOrdersIdRouteImport.update({
   id: '/orders/$id',
   path: '/orders/$id',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => KitchenRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/checkout': typeof CheckoutRoute
+  '/kitchen': typeof KitchenRouteWithChildren
+  '/login': typeof LoginRoute
   '/menu': typeof MenuRoute
   '/status': typeof StatusRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/kitchen/login': typeof KitchenLoginRoute
+  '/kitchen/menu': typeof KitchenMenuRoute
+  '/kitchen/settings': typeof KitchenSettingsRoute
+  '/kitchen/today': typeof KitchenTodayRoute
+  '/kitchen/': typeof KitchenIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/kitchen/orders/$id': typeof KitchenOrdersIdRoute
+  '/kitchen/orders/': typeof KitchenOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/checkout': typeof CheckoutRoute
+  '/login': typeof LoginRoute
   '/menu': typeof MenuRoute
   '/status': typeof StatusRoute
-  '/admin': typeof AdminIndexRoute
-  '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/kitchen/login': typeof KitchenLoginRoute
+  '/kitchen/menu': typeof KitchenMenuRoute
+  '/kitchen/settings': typeof KitchenSettingsRoute
+  '/kitchen/today': typeof KitchenTodayRoute
+  '/kitchen': typeof KitchenIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/kitchen/orders/$id': typeof KitchenOrdersIdRoute
+  '/kitchen/orders': typeof KitchenOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
+  '/admin': typeof AdminRoute
   '/checkout': typeof CheckoutRoute
+  '/kitchen': typeof KitchenRouteWithChildren
+  '/login': typeof LoginRoute
   '/menu': typeof MenuRoute
   '/status': typeof StatusRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/kitchen/login': typeof KitchenLoginRoute
+  '/kitchen/menu': typeof KitchenMenuRoute
+  '/kitchen/settings': typeof KitchenSettingsRoute
+  '/kitchen/today': typeof KitchenTodayRoute
+  '/kitchen/': typeof KitchenIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/kitchen/orders/$id': typeof KitchenOrdersIdRoute
+  '/kitchen/orders/': typeof KitchenOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -86,29 +158,62 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/checkout'
+    | '/kitchen'
+    | '/login'
     | '/menu'
     | '/status'
-    | '/admin/'
-    | '/admin/orders/$id'
+    | '/kitchen/login'
+    | '/kitchen/menu'
+    | '/kitchen/settings'
+    | '/kitchen/today'
+    | '/kitchen/'
+    | '/api/auth/$'
+    | '/kitchen/orders/$id'
+    | '/kitchen/orders/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/checkout' | '/menu' | '/status' | '/admin' | '/admin/orders/$id'
+  to:
+    | '/'
+    | '/admin'
+    | '/checkout'
+    | '/login'
+    | '/menu'
+    | '/status'
+    | '/kitchen/login'
+    | '/kitchen/menu'
+    | '/kitchen/settings'
+    | '/kitchen/today'
+    | '/kitchen'
+    | '/api/auth/$'
+    | '/kitchen/orders/$id'
+    | '/kitchen/orders'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/checkout'
+    | '/kitchen'
+    | '/login'
     | '/menu'
     | '/status'
-    | '/admin/'
-    | '/admin/orders/$id'
+    | '/kitchen/login'
+    | '/kitchen/menu'
+    | '/kitchen/settings'
+    | '/kitchen/today'
+    | '/kitchen/'
+    | '/api/auth/$'
+    | '/kitchen/orders/$id'
+    | '/kitchen/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
+  AdminRoute: typeof AdminRoute
   CheckoutRoute: typeof CheckoutRoute
+  KitchenRoute: typeof KitchenRouteWithChildren
+  LoginRoute: typeof LoginRoute
   MenuRoute: typeof MenuRoute
   StatusRoute: typeof StatusRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -134,6 +239,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kitchen': {
+      id: '/kitchen'
+      path: '/kitchen'
+      fullPath: '/kitchen'
+      preLoaderRoute: typeof KitchenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/menu': {
       id: '/menu'
       path: '/menu'
@@ -148,41 +267,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StatusRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
+    '/kitchen/': {
+      id: '/kitchen/'
       path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/kitchen/'
+      preLoaderRoute: typeof KitchenIndexRouteImport
+      parentRoute: typeof KitchenRoute
     }
-    '/admin/orders/$id': {
-      id: '/admin/orders/$id'
+    '/kitchen/login': {
+      id: '/kitchen/login'
+      path: '/login'
+      fullPath: '/kitchen/login'
+      preLoaderRoute: typeof KitchenLoginRouteImport
+      parentRoute: typeof KitchenRoute
+    }
+    '/kitchen/menu': {
+      id: '/kitchen/menu'
+      path: '/menu'
+      fullPath: '/kitchen/menu'
+      preLoaderRoute: typeof KitchenMenuRouteImport
+      parentRoute: typeof KitchenRoute
+    }
+    '/kitchen/settings': {
+      id: '/kitchen/settings'
+      path: '/settings'
+      fullPath: '/kitchen/settings'
+      preLoaderRoute: typeof KitchenSettingsRouteImport
+      parentRoute: typeof KitchenRoute
+    }
+    '/kitchen/today': {
+      id: '/kitchen/today'
+      path: '/today'
+      fullPath: '/kitchen/today'
+      preLoaderRoute: typeof KitchenTodayRouteImport
+      parentRoute: typeof KitchenRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kitchen/orders/': {
+      id: '/kitchen/orders/'
+      path: '/orders'
+      fullPath: '/kitchen/orders/'
+      preLoaderRoute: typeof KitchenOrdersIndexRouteImport
+      parentRoute: typeof KitchenRoute
+    }
+    '/kitchen/orders/$id': {
+      id: '/kitchen/orders/$id'
       path: '/orders/$id'
-      fullPath: '/admin/orders/$id'
-      preLoaderRoute: typeof AdminOrdersIdRouteImport
-      parentRoute: typeof AdminRoute
+      fullPath: '/kitchen/orders/$id'
+      preLoaderRoute: typeof KitchenOrdersIdRouteImport
+      parentRoute: typeof KitchenRoute
     }
   }
 }
 
-interface AdminRouteChildren {
-  AdminIndexRoute: typeof AdminIndexRoute
-  AdminOrdersIdRoute: typeof AdminOrdersIdRoute
+interface KitchenRouteChildren {
+  KitchenLoginRoute: typeof KitchenLoginRoute
+  KitchenMenuRoute: typeof KitchenMenuRoute
+  KitchenSettingsRoute: typeof KitchenSettingsRoute
+  KitchenTodayRoute: typeof KitchenTodayRoute
+  KitchenIndexRoute: typeof KitchenIndexRoute
+  KitchenOrdersIdRoute: typeof KitchenOrdersIdRoute
+  KitchenOrdersIndexRoute: typeof KitchenOrdersIndexRoute
 }
 
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminIndexRoute: AdminIndexRoute,
-  AdminOrdersIdRoute: AdminOrdersIdRoute,
+const KitchenRouteChildren: KitchenRouteChildren = {
+  KitchenLoginRoute: KitchenLoginRoute,
+  KitchenMenuRoute: KitchenMenuRoute,
+  KitchenSettingsRoute: KitchenSettingsRoute,
+  KitchenTodayRoute: KitchenTodayRoute,
+  KitchenIndexRoute: KitchenIndexRoute,
+  KitchenOrdersIdRoute: KitchenOrdersIdRoute,
+  KitchenOrdersIndexRoute: KitchenOrdersIndexRoute,
 }
 
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+const KitchenRouteWithChildren =
+  KitchenRoute._addFileChildren(KitchenRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
+  AdminRoute: AdminRoute,
   CheckoutRoute: CheckoutRoute,
+  KitchenRoute: KitchenRouteWithChildren,
+  LoginRoute: LoginRoute,
   MenuRoute: MenuRoute,
   StatusRoute: StatusRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -58,21 +58,21 @@ export const ADDONS: Record<string, Addon> = {
     name: "Cheese",
     price: 20,
     img: "/food/cheese.png",
-    for: ["sandwich", "maggi"],
+    for: ["sandwich", "maggi", "curry"],
   },
   schezwan: {
     id: "schezwan",
     name: "Schezwan",
     price: 20,
     img: "/food/schezwan.png",
-    for: ["sandwich", "maggi"],
+    for: ["sandwich", "maggi", "curry"],
   },
   masala: {
     id: "masala",
     name: "Double masala",
     price: 10,
     img: "/food/double-masala.png",
-    for: ["maggi"],
+    for: ["maggi", "curry"],
   },
 };
 
@@ -96,6 +96,7 @@ export const MENU: MenuItem[] = [
     blurb: "Slow-cooked home-style curry.",
     price: 80,
     img: "/food/chicken-curry.png",
+    tags: ["curry"],
     sizes: [
       { id: "full", name: "Full", price: 80 },
       { id: "half", name: "Half", price: 60 },

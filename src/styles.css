@@ -2,21 +2,21 @@
 @import "tw-animate-css";
 
 @theme {
-  --color-bg: #faf8f1;
-  --color-surface: #fffdf8;
+  --color-bg: #f6f3ea;
+  --color-surface: #fffcf6;
   --color-ink: #111815;
-  --color-muted: #626762;
+  --color-muted: #6a6e68;
   --color-forest: #004b3a;
-  --color-forest-deep: #003227;
-  --color-lime: #dfff4f;
-  --color-lime-soft: #eef8a8;
-  --color-soft: #eff4ea;
+  --color-forest-deep: #07271c;
+  --color-lime: #dcfb75;
+  --color-lime-soft: #f1f7d5;
+  --color-soft: #eef3e8;
   --color-line: rgb(17 24 21 / 0.08);
-  --color-on-forest: #faf8f1;
-  --color-on-lime: #003227;
-  --color-chip-ready: #e7f6d8;
-  --color-chip-prep: #f6efc4;
-  --color-chip-warn: #c3541a;
+  --color-on-forest: #f6f3ea;
+  --color-on-lime: #07271c;
+  --color-chip-ready: #e4f4d4;
+  --color-chip-prep: #f3ecc0;
+  --color-chip-warn: #c45a1c;
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-script: "Great Vibes", cursive;
@@ -25,22 +25,16 @@
   --text-caption: 0.8125rem;
   --text-body: 0.9375rem;
   --text-ticket: 7.25rem;
-  --container-phone: 26.875rem;
-  --height-hero: 23.75rem;
+  --container-phone: 24.375rem;
+  --height-hero: 25.25rem;
   --height-banner: 8.5rem;
-  --height-cta: 3.5rem;
-  --height-chip: 2.25rem;
-  --height-field: 2.875rem;
-  --height-thumb: 4rem;
-  --height-plus: 2.25rem;
-  --height-row: 5.25rem;
-  --radius-sm: 0.625rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1.125rem;
-  --radius-xl: 1.5rem;
-  --radius-sheet: 1.75rem;
-  --shadow-bar: 0 8px 24px rgb(0 50 35 / 0.18);
-  --shadow-card: 0 1px 2px rgb(17 24 21 / 0.04), 0 0 0 1px rgb(17 24 21 / 0.06);
+  --height-cta: 3.375rem;
+  --height-chip: 2.125rem;
+  --height-field: 2.75rem;
+  --height-sheet-hero: 13.75rem;
+  --height-size: 4.75rem;
+  --shadow-bar: 0 10px 28px rgb(0 40 28 / 0.22);
+  --shadow-card: 0 1px 2px rgb(17 24 21 / 0.05), 0 0 0 1px rgb(17 24 21 / 0.06);
   --shadow-lift: 0 8px 24px rgb(0 50 35 / 0.1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -69,9 +63,6 @@
   h3 {
     text-wrap: balance;
   }
-  p {
-    text-wrap: pretty;
-  }
 }
 
 @layer utilities {
@@ -82,27 +73,23 @@
     transform: scale(0.96);
   }
   .pad-safe-t {
-    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-top: max(1.25rem, env(safe-area-inset-top));
   }
   .pad-safe-b {
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
   }
 }
 
-.hero-enter {
-  animation: rise 420ms var(--ease-out) both;
-}
 .bar-enter {
   animation: rise 280ms var(--ease-out) both;
 }
 .ticket-pop {
   animation: pop 320ms var(--ease-out) both;
 }
-
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -112,20 +99,17 @@
 @keyframes pop {
   from {
     opacity: 0;
-    transform: scale(0.92);
+    transform: scale(0.94);
   }
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
-
 .track-fill {
   transition: width 350ms var(--ease-out);
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .hero-enter,
   .bar-enter,
   .ticket-pop {
     animation: none;

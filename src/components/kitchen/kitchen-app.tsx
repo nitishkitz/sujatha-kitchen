@@ -7,7 +7,7 @@ import { PhoneShell } from "./bits";
 import { StartScreen } from "./start-screen";
 import { MenuScreen } from "./menu-screen";
 import { ItemSheet } from "./item-sheet";
-import { BagBar, BagSheet } from "./bag-sheet";
+import { BagBar } from "./bag-sheet";
 import { CheckoutScreen } from "./checkout-screen";
 import { StatusScreen } from "./status-screen";
 
@@ -20,7 +20,7 @@ export function KitchenApp() {
   }, []);
 
   return (
-    <div className="min-h-dvh bg-forest-deep/5">
+    <div className="min-h-dvh bg-forest-deep">
       <PhoneShell>
         {screen === "start" && <StartScreen />}
         {screen === "menu" && <MenuScreen />}
@@ -28,7 +28,6 @@ export function KitchenApp() {
         {screen === "status" && <StatusScreen />}
         {screen === "menu" && <BagBar />}
         <ItemSheet />
-        <BagSheet />
       </PhoneShell>
       <Toaster position="top-center" richColors />
     </div>
