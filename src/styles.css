@@ -2,21 +2,46 @@
 @import "tw-animate-css";
 
 @theme {
-  --color-bg: #fffcf7;
-  --color-surface: #ffffff;
-  --color-tile: #f3ece0;
-  --color-ink: #161616;
-  --color-muted: #6a6560;
-  --color-forest: #1b4d3e;
-  --color-forest-deep: #12352c;
-  --color-terra: #c3541a;
-  --color-line: rgb(22 22 22 / 0.08);
-  --color-cream: #f4ead8;
-  --color-paper: #ffffff;
+  --color-bg: #faf8f1;
+  --color-surface: #fffdf8;
+  --color-ink: #111815;
+  --color-muted: #626762;
+  --color-forest: #004b3a;
+  --color-forest-deep: #003227;
+  --color-lime: #dfff4f;
+  --color-lime-soft: #eef8a8;
+  --color-soft: #eff4ea;
+  --color-line: rgb(17 24 21 / 0.08);
+  --color-on-forest: #faf8f1;
+  --color-on-lime: #003227;
+  --color-chip-ready: #e7f6d8;
+  --color-chip-prep: #f6efc4;
+  --color-chip-warn: #c3541a;
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-script: "Great Vibes", cursive;
   --font-te: "Noto Sans Telugu", "DM Sans", sans-serif;
-  --shadow-bar: 0 8px 24px rgb(18 53 44 / 0.22);
+  --text-micro: 0.6875rem;
+  --text-caption: 0.8125rem;
+  --text-body: 0.9375rem;
+  --text-ticket: 7.25rem;
+  --container-phone: 26.875rem;
+  --height-hero: 23.75rem;
+  --height-banner: 8.5rem;
+  --height-cta: 3.5rem;
+  --height-chip: 2.25rem;
+  --height-field: 2.875rem;
+  --height-thumb: 4rem;
+  --height-plus: 2.25rem;
+  --height-row: 5.25rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.5rem;
+  --radius-sheet: 1.75rem;
+  --shadow-bar: 0 8px 24px rgb(0 50 35 / 0.18);
+  --shadow-card: 0 1px 2px rgb(17 24 21 / 0.04), 0 0 0 1px rgb(17 24 21 / 0.06);
+  --shadow-lift: 0 8px 24px rgb(0 50 35 / 0.1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -49,31 +74,66 @@
   }
 }
 
-.steam {
-  position: absolute;
-  width: 6px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.5);
-  filter: blur(2px);
-  animation: steam 2.4s ease-in infinite;
-}
-@keyframes steam {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 8px);
+@layer utilities {
+  .press {
+    transition: transform 150ms var(--ease-out);
   }
-  30% {
-    opacity: 0.65;
+  .press:active {
+    transform: scale(0.96);
   }
-  to {
-    opacity: 0;
-    transform: translate(-50%, -32px);
+  .pad-safe-t {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  .pad-safe-b {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
   }
 }
 
+.hero-enter {
+  animation: rise 420ms var(--ease-out) both;
+}
+.bar-enter {
+  animation: rise 280ms var(--ease-out) both;
+}
+.ticket-pop {
+  animation: pop 320ms var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.track-fill {
+  transition: width 350ms var(--ease-out);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .steam {
+  .hero-enter,
+  .bar-enter,
+  .ticket-pop {
     animation: none;
+  }
+  .track-fill {
+    transition: none;
+  }
+  .press:active {
+    transform: none;
   }
 }

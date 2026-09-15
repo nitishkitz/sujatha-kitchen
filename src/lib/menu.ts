@@ -5,16 +5,52 @@ export type MenuItem = {
   cat: Category;
   name: string;
   desc: string;
+  blurb?: string;
   price: number;
   img: string;
   hero?: boolean;
   tags?: string[];
+  veg?: boolean;
   sizes?: Size[];
   imgs?: Record<string, string>;
 };
 
 export const CATS = ["Lunch", "Maggi & More", "Snacks", "Beverages"] as const;
 export type Category = (typeof CATS)[number];
+
+export const CAT_LABEL: Record<Category, string> = {
+  Lunch: "Lunch",
+  "Maggi & More": "Maggi & More",
+  Snacks: "Snacks",
+  Beverages: "Drinks",
+};
+
+export const CAT_HERO: Record<Category, { kicker: string; title: string; line: string; imgs: string[] }> = {
+  Lunch: {
+    kicker: "LUNCH",
+    title: "LUNCH",
+    line: "Proper meals.\nNo nonsense.",
+    imgs: ["/food/veg-meals.png", "/food/chicken-curry.png"],
+  },
+  "Maggi & More": {
+    kicker: "QUICK",
+    title: "MAGGI",
+    line: "Hot bowls.\nReady fast.",
+    imgs: ["/food/veg-maggi.png", "/food/egg-maggi.png"],
+  },
+  Snacks: {
+    kicker: "BITES",
+    title: "SNACKS",
+    line: "Crisp, stuffed,\nshareable.",
+    imgs: ["/food/samosa.png", "/food/egg-puff.png"],
+  },
+  Beverages: {
+    kicker: "SIPS",
+    title: "DRINKS",
+    line: "Hot cups &\ncold glasses.",
+    imgs: ["/food/tea.png", "/food/lassi.png"],
+  },
+};
 
 export const ADDONS: Record<string, Addon> = {
   cheese: {
@@ -26,7 +62,7 @@ export const ADDONS: Record<string, Addon> = {
   },
   schezwan: {
     id: "schezwan",
-    name: "Schezwan sauce",
+    name: "Schezwan",
     price: 20,
     img: "/food/schezwan.png",
     for: ["sandwich", "maggi"],
@@ -44,17 +80,20 @@ export const MENU: MenuItem[] = [
   {
     id: "veg-meals",
     cat: "Lunch",
-    name: "Meals (Veg)",
-    desc: "Homely thali · rice, dal, curry, curd",
+    name: "Veg meals",
+    desc: "Rice, sambar, poriyal, kootu",
+    blurb: "A homely thali, plated the way Sujatha makes it.",
     price: 100,
     img: "/food/veg-meals.png",
     hero: true,
+    veg: true,
   },
   {
     id: "chicken-curry",
     cat: "Lunch",
     name: "Chicken Curry",
-    desc: "Full or half plate",
+    desc: "Homestyle spicy chicken curry",
+    blurb: "Slow-cooked home-style curry.",
     price: 80,
     img: "/food/chicken-curry.png",
     sizes: [
@@ -66,17 +105,19 @@ export const MENU: MenuItem[] = [
     id: "egg-curry",
     cat: "Lunch",
     name: "Egg Curry",
-    desc: "Home-style gravy",
+    desc: "Spiced egg curry in rich gravy",
+    blurb: "Boiled eggs in a peppery home gravy.",
     price: 40,
     img: "/food/egg-curry.png",
   },
   {
     id: "veg-curry",
     cat: "Lunch",
-    name: "Curries (separately)",
-    desc: "Extra curry bowl",
+    name: "Extra curry",
+    desc: "Sambar / rasam / kuzhambu",
     price: 30,
     img: "/food/veg-curry.png",
+    veg: true,
   },
   {
     id: "omelette",
@@ -106,9 +147,10 @@ export const MENU: MenuItem[] = [
     id: "chapati",
     cat: "Lunch",
     name: "Chapati (2 pcs)",
-    desc: "Soft wheat rotis",
+    desc: "Soft homemade chapati",
     price: 30,
     img: "/food/chapati.png",
+    veg: true,
   },
   {
     id: "veg-maggi",
@@ -119,6 +161,7 @@ export const MENU: MenuItem[] = [
     img: "/food/veg-maggi.png",
     hero: true,
     tags: ["maggi"],
+    veg: true,
   },
   {
     id: "egg-maggi",
@@ -136,6 +179,7 @@ export const MENU: MenuItem[] = [
     desc: "Crispy fritters",
     price: 35,
     img: "/food/onion-pakoda.png",
+    veg: true,
   },
   {
     id: "mirchi-bajji",
@@ -144,6 +188,7 @@ export const MENU: MenuItem[] = [
     desc: "Stuffed chilli fry",
     price: 35,
     img: "/food/mirchi-bajji.png",
+    veg: true,
   },
   {
     id: "bread-pakoda",
@@ -152,6 +197,7 @@ export const MENU: MenuItem[] = [
     desc: "Stuffed fried bread",
     price: 40,
     img: "/food/bread-pakoda.png",
+    veg: true,
   },
   {
     id: "egg-bajji",
@@ -201,6 +247,7 @@ export const MENU: MenuItem[] = [
     price: 20,
     img: "/food/samosa.png",
     hero: true,
+    veg: true,
   },
   {
     id: "egg-puff",
@@ -218,6 +265,7 @@ export const MENU: MenuItem[] = [
     price: 60,
     img: "/food/veg-sandwich-cold.png",
     tags: ["sandwich"],
+    veg: true,
     sizes: [
       { id: "cold", name: "Cold", price: 60 },
       { id: "grill", name: "Grill", price: 80 },
@@ -252,6 +300,7 @@ export const MENU: MenuItem[] = [
     price: 20,
     img: "/food/tea.png",
     hero: true,
+    veg: true,
   },
   {
     id: "black-coffee",
@@ -260,6 +309,7 @@ export const MENU: MenuItem[] = [
     desc: "Hot",
     price: 20,
     img: "/food/black-coffee.png",
+    veg: true,
   },
   {
     id: "coffee",
@@ -268,6 +318,7 @@ export const MENU: MenuItem[] = [
     desc: "Hot filter coffee",
     price: 25,
     img: "/food/coffee.png",
+    veg: true,
   },
   {
     id: "iced-tea",
@@ -276,6 +327,7 @@ export const MENU: MenuItem[] = [
     desc: "Cold",
     price: 25,
     img: "/food/iced-tea.png",
+    veg: true,
   },
   {
     id: "cold-coffee",
@@ -284,6 +336,7 @@ export const MENU: MenuItem[] = [
     desc: "Frappe style",
     price: 40,
     img: "/food/cold-coffee.png",
+    veg: true,
   },
   {
     id: "lassi",
@@ -292,10 +345,13 @@ export const MENU: MenuItem[] = [
     desc: "Cold yogurt drink",
     price: 35,
     img: "/food/lassi.png",
+    veg: true,
   },
 ];
 
 export const SLOTS = ["12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "6:30 PM", "7:00 PM"];
+
+export const SIZE_ORDER = ["half", "full", "cold", "grill"];
 
 export function itemById(id: string) {
   return MENU.find((i) => i.id === id);
@@ -304,4 +360,16 @@ export function itemById(id: string) {
 export function addonsFor(item: MenuItem) {
   const tags = item.tags ?? [];
   return Object.values(ADDONS).filter((a) => a.for.some((t) => tags.includes(t)));
+}
+
+export function orderedSizes(item: MenuItem) {
+  if (!item.sizes) return [];
+  return [...item.sizes].sort(
+    (a, b) => SIZE_ORDER.indexOf(a.id) - SIZE_ORDER.indexOf(b.id),
+  );
+}
+
+export function defaultSize(item: MenuItem) {
+  if (!item.sizes?.length) return null;
+  return item.sizes.find((s) => s.id === "full" || s.id === "grill")?.id ?? item.sizes[0].id;
 }
